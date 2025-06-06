@@ -4,64 +4,42 @@ import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
+import org.littletonrobotics.junction.AutoLog;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import frc.lib.logfields.IOBase;
 import frc.lib.logfields.LogFieldsTable;
 
-public abstract class ModuleIO extends IOBase {
+public interface ModuleIO{
 
-    //public double[] odometryTimestamps = new double[] {};
-    // public double[] odometryDrivePositionsRad = new double[] {};
-    //public Rotation2d[] odometryTurnPositions = new Rotation2d[] {};
+    @AutoLog
+    public static class ModulIOInputs {
 
+        //drive
+        public boolean driveConnected = false;
+        public double drivePositionRad = 0.0;
+        public double driveVelocityRadPerSec = 0.0;
+        public double driveAppliedVolts = 0.0;
+        public double driveCurrentAmps = 0.0;
 
-    BooleanSupplier driveConnected = fields.addBoolean("drive Connected", this::getDriveConnected);
-    DoubleSupplier drivePositionRad = fields.addDouble("drive Position Rad", this::getDrivePositionRad);
-    DoubleSupplier driveVelocityRadPerSec = fields.addDouble("drive Velocity Rad Per Sec", this::getDriveVelocityRadPerSec);
-    DoubleSupplier driveAppliedVolts = fields.addDouble("drive Applied Volts", this::getDriveAppliedVolts);
-    DoubleSupplier driveCurrentAmps = fields.addDouble("drive Current Amps", this::getDriveCurrentAmps);
+        //turn
+        public boolean turnConnected = false;
+        public Rotation2d turnPosition = new Rotation2d();
+        public double turnVelocityRadPerSec = 0.0;
+        public double turnAppliedVolts = 0.0;
+        public double turnCurrentAmps = 0.0;
+        public double absolutePosition = 0.0;
     
-    BooleanSupplier turnConnected = fields.addBoolean("turn Connected", this::getTurnConnected);
-    Supplier<Rotation2d> turnPosition = fields.addObject("turn Positions", this::turnPosition, new Rotation2d());
-    DoubleSupplier turnVelocityRadPerSec = fields.addDouble("turn Velocity Rad Per Sec", this::getTurnVelocityRadPerSec);
-    DoubleSupplier turnAppliedVolts = fields.addDouble("turn Applied Volts", this::getTurnAppliedVolts);
-    DoubleSupplier turnCurrentAmps = fields.addDouble("turn Current Amps", this::getTurnCurrentAmps);
-    DoubleSupplier absolutePosition = fields.addDouble("absolute Position", this::getAbsolutePosition);
-    
-    Supplier<double[]> odometryTimestamps = fields.addDoubleArray("odometry Timestamps", getOdometryTimestamps());
-    Supplier<double[]> odometryDrivePositionsRad = fields.addDoubleArray("odometryDrivePositionsRad", getodometryDrivePositionsRad());
-    Supplier<Rotation2d[]> odometryTurnPositions = fields.addObjectArray("odometry Turn Positions", getOdometryTurnPositions() , new Rotation2d[]{});
-
-    public ModuleIO(LogFieldsTable fieldsTable){
-        super(fieldsTable);
+        //odometry
+        public double[] odometryTimestamps = new double[] {};
+        public double[] odometryDrivePositionsRad = new double[] {};
+        public Rotation2d[] odometryTurnPositions = new Rotation2d[] {};
     }
-    
-    //get:
-    
-    public abstract boolean getDriveConnected();
-    public abstract double getDrivePositionRad();
-    public abstract double getDriveVelocityRadPerSec();
-    public abstract double getDriveAppliedVolts();
-    public abstract double getDriveCurrentAmps();
-    
-    public abstract boolean getTurnConnected();
-    public abstract Rotation2d turnPosition();
-    public abstract double getTurnVelocityRadPerSec();
-    public abstract double getTurnAppliedVolts();
-    public abstract double getTurnCurrentAmps();
-    public abstract double getAbsolutePosition();
-    
-    public abstract Supplier<double[]> getOdometryTimestamps();
-    public abstract Supplier<double[]> getodometryDrivePositionsRad();
-    public abstract Supplier<Rotation2d[]> getOdometryTurnPositions();
 
-
-    
-    //set:
-
-    public abstract void setDriveOpenLoop(double output);
-    public abstract void setTurnOpenLoop(double output);
-    public abstract void setDriveVelocity(double velocityRadPerSec);
-    public abstract void setTurnPosition(Rotation2d rotation);
+    public default void updateInputs(ModulIOInputs inputs){}
+    public default void setDriveOpenLoop(double output){}
+    public default void setTurnOpenLoop(double output){}
+    public default void setDriveVelocity(double velocityRadPerSec){}
+    public default void setTurnPosition(Rotation2d rotation){}
 
 }
