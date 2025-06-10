@@ -112,6 +112,33 @@ public class ModuleIOReal implements ModuleIO{
                     .velocityConversionFactor(DriveConstants.turnEncoderVelocityFactor)
                     .averageDepth(2);
 
+        turnConfig.closedLoop
+                    .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
+                    .positionWrappingEnabled(true)
+                    .positionWrappingInputRange(DriveConstants.turnPIDMinInput, DriveConstants.turnPIDMaxInput)
+                    .pidf(DriveConstants.turnKp, 0.0, DriveConstants.turnKd, 0.0);
+
+        turnConfig.signals
+                    .absoluteEncoderPositionAlwaysOn(true)
+                    .absoluteEncoderPositionPeriodMs((int) (1000.0 / DriveConstants.odometryFrequency))
+                    .absoluteEncoderVelocityAlwaysOn(true)
+                    .absoluteEncoderVelocityPeriodMs(20)
+                    .appliedOutputPeriodMs(20)
+                    .busVoltagePeriodMs(20)
+                    .outputCurrentPeriodMs(20);
+
+        tryUntilOk(
+                    turnSpark,
+                    5,
+                    () -> turnSpark.configure(
+                            turnConfig, ResetMode.kResetSafeParameters,
+                            PersistMode.kPersistParameters));
+                            
+        
+        // create odomtry queues
+        timestampQueue = OdometryThread.getInstance().makeTimestampQueue();
+        drivePositionQueue = OdometryThread.getInstance().registerSignal(driveSpark, driveEncoder::getPosition);
+        turnPositionQueue = OdometryThread.getInstance().registerSignal(turnSpark, turnEncoder::getPosition);
         
     }
 
