@@ -9,9 +9,12 @@ import java.util.function.DoubleSupplier;
 
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkBase;
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkClosedLoopController.ArbFFUnits;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -21,6 +24,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkFlexConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.geometry.Rotation2d;
 
@@ -181,6 +185,30 @@ public class ModuleIOReal implements ModuleIO{
         timestampQueue.clear();
         drivePositionQueue.clear();
         turnPositionQueue.clear();
+    }
+
+    @Override
+    public void setDriveOpenLoop(double output) {
+        driveSpark.setVoltage(output);
+    }
+
+    @Override
+    public void setTurnOpenLoop(double output) {
+        turnSpark.setVoltage(output);
+    }
+
+    @Override
+    public void setDriveVelocity(double velocityRadPerSec) {
+        double ffVolts = DriveConstants.driveKs * Math.signum(velocityRadPerSec) + DriveConstants.driveKv * velocityRadPerSec;
+        driveController.setReference(
+                velocityRadPerSec, ControlType.kVelocity, ClosedLoopSlot.kSlot0, ffVolts, ArbFFUnits.kVoltage);
+    }
+
+    @Override
+    public void setTurnPosition(Rotation2d rotation) {
+        double setpoint = MathUtil.inputModulus(
+            rotation.plus(zeroRotation).getRadians(), DriveConstants.turnPIDMinInput ,  DriveConstants.turnPIDMaxInput);
+        turnController.setReference(setpoint, ControlType.kPosition);
     }
 
 
