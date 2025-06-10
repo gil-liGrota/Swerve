@@ -1,8 +1,11 @@
 package frc.robot.Subsystems.Swerve;
 
+import static frc.robot.util.SparkUtil.ifOk;
+import static frc.robot.util.SparkUtil.sparkStickyFault;
 import static frc.robot.util.SparkUtil.tryUntilOk;
 
 import java.util.Queue;
+import java.util.function.DoubleSupplier;
 
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
@@ -141,5 +144,44 @@ public class ModuleIOReal implements ModuleIO{
         turnPositionQueue = OdometryThread.getInstance().registerSignal(turnSpark, turnEncoder::getPosition);
         
     }
+
+    @Override
+    public void updateInputs(ModulIOInputs inputs) {
+        // update drive inputs
+        sparkStickyFault = false;
+        ifOk(driveSpark, driveEncoder::getPosition, (value) -> inputs.drivePositionRad = value);
+        ifOk(driveSpark, driveEncoder::getVelocity, (value) -> inputs.driveVelocityRadPerSec = value);
+        ifOk(
+            driveSpark, 
+            new DoubleSupplier[] {driveSpark::getAppliedOutput ,driveSpark::getBusVoltage }, 
+            (value) -> inputs.driveAppliedVolts = value[0] * value[1]);
+        ifOk(driveSpark, driveSpark::getOutputCurrent, (value) -> inputs.driveCurrentAmps = value);
+        inputs.driveConnected = driveConnectedDebounce.calculate(!sparkStickyFault);
+
+        // update turn inputs
+        sparkStickyFault = false;
+        ifOk(
+            turnSpark,
+            turnEncoder::getPosition,
+            (value) -> inputs.turnPosition = new Rotation2d(value).minus(zeroRotation));
+
+        ifOk(turnSpark, turnEncoder::getVelocity, (value) -> inputs.turnVelocityRadPerSec = value);
+        ifOk(
+            turnSpark,
+            new DoubleSupplier[] {turnSpark::getAppliedOutput, turnSpark::getBusVoltage},
+            (value) -> inputs.turnAppliedVolts =  value[0] * value[1]);
+        ifOk(turnSpark, turnSpark::getOutputCurrent, (value) -> inputs.turnCurrentAmps = value);
+        inputs.turnConnected = turnConnectedDebounce.calculate(!sparkStickyFault);
+
+        //update odmetry inputs
+        inputs.odometryTimestamps = timestampQueue.stream().mapToDouble((Double value) -> value).toArray();
+        inputs.odometryDrivePositionsRad = drivePositionQueue.stream().mapToDouble((Double value) -> value).toArray();
+        inputs.odometryTurnPositions = turnPositionQueue.stream().map((Double value) -> new Rotation2d(value).minus(zeroRotation))
+        .toArray(Rotation2d[]::new);
+        timestampQueue.clear();
+        drivePositionQueue.clear();
+        turnPositionQueue.clear();
+    }
+
 
 }
