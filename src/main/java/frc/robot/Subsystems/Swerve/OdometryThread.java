@@ -10,12 +10,8 @@ import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.function.DoubleSupplier;
 
-import com.revrobotics.spark.SparkBase;
-
-import edu.wpi.first.wpilibj.Notifier;
-
 public class OdometryThread {
-    private final List<SparkBase> sparks = new ArrayList<>();
+  private final List<SparkBase> sparks = new ArrayList<>();
   private final List<DoubleSupplier> sparkSignals = new ArrayList<>();
   private final List<DoubleSupplier> genericSignals = new ArrayList<>();
   private final List<Queue<Double>> sparkQueues = new ArrayList<>();
@@ -25,7 +21,6 @@ public class OdometryThread {
   private static OdometryThread instance = null;
   private Notifier notifier = new Notifier(this::run);
 
-  
   public static OdometryThread getInstance() {
     if (instance == null) {
       instance = new OdometryThread();
