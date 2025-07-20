@@ -7,7 +7,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 public interface ModuleIO {
 
     @AutoLog
-    public static class ModulIOInputs {
+    public static class ModuleIOInputs {
 
         // drive
         public boolean driveConnected = false;
@@ -30,7 +30,7 @@ public interface ModuleIO {
         public Rotation2d[] odometryTurnPositions = new Rotation2d[] {};
     }
 
-    public default void updateInputs(ModulIOInputs inputs) {
+    public default void updateInputs(ModuleIOInputs inputs) {
     }
 
     public default void setDriveOpenLoop(double output) {

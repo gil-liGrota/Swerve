@@ -1,29 +1,6 @@
 package frc.robot.Subsystems.Swerve;
 
-import static frc.robot.Subsystems.Swerve.DriveConstants.backLeftZeroRotation;
-import static frc.robot.Subsystems.Swerve.DriveConstants.backRightZeroRotation;
-import static frc.robot.Subsystems.Swerve.DriveConstants.driveEncoderPositionFactor;
-import static frc.robot.Subsystems.Swerve.DriveConstants.driveKd;
-import static frc.robot.Subsystems.Swerve.DriveConstants.driveKp;
-import static frc.robot.Subsystems.Swerve.DriveConstants.driveKs;
-import static frc.robot.Subsystems.Swerve.DriveConstants.driveKv;
-import static frc.robot.Subsystems.Swerve.DriveConstants.driveRampRate;
-import static frc.robot.Subsystems.Swerve.DriveConstants.driveSlipCurrent;
-import static frc.robot.Subsystems.Swerve.DriveConstants.frontLeftZeroRotation;
-import static frc.robot.Subsystems.Swerve.DriveConstants.frontRightZeroRotation;
-import static frc.robot.Subsystems.Swerve.DriveConstants.odometryFrequency;
-import static frc.robot.Subsystems.Swerve.DriveConstants.swerveBaseID;
-import static frc.robot.Subsystems.Swerve.DriveConstants.swerveModuleIDsCount;
-import static frc.robot.Subsystems.Swerve.DriveConstants.turnEncoderPositionFactor;
-import static frc.robot.Subsystems.Swerve.DriveConstants.turnEncoderVelocityFactor;
-import static frc.robot.Subsystems.Swerve.DriveConstants.turnInverted;
-import static frc.robot.Subsystems.Swerve.DriveConstants.turnKd;
-import static frc.robot.Subsystems.Swerve.DriveConstants.turnKp;
-import static frc.robot.Subsystems.Swerve.DriveConstants.turnKs;
-import static frc.robot.Subsystems.Swerve.DriveConstants.turnMotorCurrentLimit;
-import static frc.robot.Subsystems.Swerve.DriveConstants.turnMotorRampRate;
-import static frc.robot.Subsystems.Swerve.DriveConstants.turnPIDMaxInput;
-import static frc.robot.Subsystems.Swerve.DriveConstants.turnPIDMinInput;
+import static frc.robot.Subsystems.Swerve.DriveConstants.*;
 import static frc.robot.util.PhoenixUtil.tryUntilOk;
 import static frc.robot.util.SparkUtil.ifOk;
 import static frc.robot.util.SparkUtil.sparkStickyFault;
@@ -174,7 +151,7 @@ public class ModuleIOReal implements ModuleIO {
     }
 
     @Override
-    public void updateInputs(ModulIOInputs inputs) {
+    public void updateInputs(ModuleIOInputs inputs) {
 
         // update drive inputs
         var driveStatus = BaseStatusSignal.refreshAll(driveMotor.getPosition(), driveMotor.getVelocity(),
