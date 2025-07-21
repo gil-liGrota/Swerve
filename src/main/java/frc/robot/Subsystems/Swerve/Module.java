@@ -77,6 +77,11 @@ public class Module {
         io.setTurnOpenLoop(0.0);
     }
 
+    public void runCharacterization(double output) {
+        io.setDriveOpenLoop(output);
+        io.setTurnPosition(new Rotation2d());
+    }
+
     public double getPositionMeters() {
         return inputs.drivePositionRad * wheelRadiusMeters;
     }
