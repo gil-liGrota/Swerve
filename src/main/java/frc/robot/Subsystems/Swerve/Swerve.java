@@ -8,7 +8,7 @@ import static edu.wpi.first.units.Units.Volts;
 import static frc.robot.Constants.currentMode;
 import static frc.robot.Subsystems.Swerve.DriveConstants.driveBaseRadius;
 import static frc.robot.Subsystems.Swerve.DriveConstants.maxSpeedMetersPerSec;
-import static frc.robot.Subsystems.Swerve.DriveConstants.moduleTranslations;
+import static frc.robot.Subsystems.Swerve.DriveConstants.*;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -186,7 +186,6 @@ public class Swerve extends SubsystemBase {
         Logger.recordOutput("good vision", goodVision);
 
         // Update odometry
-        // FIXME לא הבנתי כלוםםםםםם
         double[] sampleTimestamps = modules[0].getOdometryTimestamps(); // All signals are sampled together
         int sampleCount = sampleTimestamps.length;
         for (int i = 0; i < sampleCount; i++) {
@@ -216,7 +215,6 @@ public class Swerve extends SubsystemBase {
 
             // Apply update
             poseEstimator.updateWithTime(sampleTimestamps[i], rawGyroRotation, modulePositions);
-            // כןכן זה עד לפה
         }
 
         // Update gyro alert

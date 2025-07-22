@@ -29,7 +29,7 @@ public class GyroIOPigeon implements GyroIO {
     public void updateInputs(GyroIOInputs inputs) {
         inputs.connected = pigeon.getState() != PigeonState.NoComm;
         inputs.yawPosition = Rotation2d.fromDegrees(pigeon.getYaw()).minus(offset);
-        inputs.yawVelocityRadPerSec = Units.degreesToRadians(pigeon.getRate());
+        inputs.yawVelocityRadPerSec = Units.degreesToRadians(-pigeon.getRate());
 
         inputs.odometryYawTimestams = yawTimestampQueue.stream().mapToDouble((Double Value) -> Value).toArray();
         inputs.odometryYawPositions = yawPositionQueue.stream().map((Double Value) -> Rotation2d.fromDegrees(Value))

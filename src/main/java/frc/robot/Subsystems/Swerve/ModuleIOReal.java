@@ -76,7 +76,7 @@ public class ModuleIOReal implements ModuleIO {
         turnEncoder = new CANcoder(swerveBaseID + 2 + swerveModuleIDsCount * module);
 
         var encoderConfig = new CANcoderConfiguration();
-        encoderConfig.MagnetSensor.SensorDirection = module == 3 ? SensorDirectionValue.CounterClockwise_Positive
+        encoderConfig.MagnetSensor.SensorDirection = module == 1 ? SensorDirectionValue.CounterClockwise_Positive
                 : SensorDirectionValue.Clockwise_Positive;
 
         encoderConfig.MagnetSensor.MagnetOffset = zeroRotation.getRotations();
@@ -176,6 +176,7 @@ public class ModuleIOReal implements ModuleIO {
                 (value) -> inputs.turnAppliedVolts = value[0] * value[1]);
         ifOk(turnMotor, turnMotor::getOutputCurrent, (value) -> inputs.turnCurrentAmps = value);
         inputs.turnConnected = turnConnectedDebounce.calculate(!sparkStickyFault);
+        inputs.absolutePosition = getAbsolutePosition();
 
         // update odmetry inputs
         inputs.odometryTimestamps = timestampQueue.stream().mapToDouble((Double value) -> value).toArray();
