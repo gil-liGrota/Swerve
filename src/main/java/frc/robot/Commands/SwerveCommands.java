@@ -63,6 +63,8 @@ public class SwerveCommands {
                     Translation2d linearVelocity = getLinearVelocityFromJoysticks(xSupplier.getAsDouble(),
                             ySupplier.getAsDouble());
 
+                    linearVelocity = linearVelocity.times(0.25);// TODO remove
+
                     // Apply rotation deadband
                     double omega = MathUtil.applyDeadband(omegaSupplier.getAsDouble(), DEADBAND);
 

@@ -235,7 +235,8 @@ public class Swerve extends SubsystemBase {
         Logger.recordOutput("SwerveStates/Setpoints", setpointStates);
         Logger.recordOutput("SwerveChassisSpeeds/Setpoints", speeds);
 
-        if (Math.abs(speeds.omegaRadiansPerSecond + speeds.vxMetersPerSecond + speeds.vyMetersPerSecond) < 0.01) {
+        if (Math.abs(speeds.omegaRadiansPerSecond) + Math.abs(speeds.vxMetersPerSecond)
+                + Math.abs(speeds.vyMetersPerSecond) < 0.01) {
             for (int i = 0; i < 4; i++) {
                 modules[i].stop();
             }

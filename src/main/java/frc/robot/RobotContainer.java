@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.Commands.SwerveCommands;
 import frc.robot.Subsystems.Swerve.GyroIOPigeon;
 import frc.robot.Subsystems.Swerve.ModuleIOReal;
 import frc.robot.Subsystems.Swerve.Swerve;
@@ -14,6 +15,9 @@ public class RobotContainer {
     private XboxController driverController = new XboxController(0);
 
     public RobotContainer() {
+        swerve.setDefaultCommand(
+                SwerveCommands.joystickDrive(swerve, driverController::getLeftY, driverController::getLeftX,
+                        () -> driverController.getLeftTriggerAxis() - driverController.getRightTriggerAxis()));
         configureBindings();
     }
 

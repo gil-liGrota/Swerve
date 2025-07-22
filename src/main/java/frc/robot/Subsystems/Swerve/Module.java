@@ -56,7 +56,10 @@ public class Module {
 
         // Apply setpoints
         if (isOpenLoop) {
-            io.setDriveOpenLoop(state.speedMetersPerSecond / wheelRadiusMeters);
+            io.setDriveOpenLoop(state.speedMetersPerSecond / maxSpeedMetersPerSec * 12);
+            Logger.recordOutput(getModuleString() + " requsted speed meter per sec", state.speedMetersPerSecond);
+            Logger.recordOutput(getModuleString() + " requsted rad per sec",
+                    state.speedMetersPerSecond / wheelRadiusMeters);
         } else {
             io.setDriveVelocity(state.speedMetersPerSecond / wheelRadiusMeters);
         }

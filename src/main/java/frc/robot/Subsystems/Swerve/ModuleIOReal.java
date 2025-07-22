@@ -122,7 +122,7 @@ public class ModuleIOReal implements ModuleIO {
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
                 .positionWrappingEnabled(true)
                 .positionWrappingInputRange(turnPIDMinInput, turnPIDMaxInput)
-                .pidf(turnKp, 0.0, turnKd, 0.0);
+                .pidf(turnKp, 0.0, turnKd, 0.0).outputRange(-turnPIDMaxOutput, turnPIDMaxOutput);
 
         turnConfig.signals
                 .primaryEncoderPositionAlwaysOn(true)
@@ -167,7 +167,7 @@ public class ModuleIOReal implements ModuleIO {
         ifOk(
                 turnMotor,
                 turnMotor.getEncoder()::getPosition,
-                (value) -> inputs.turnPosition = new Rotation2d(value).minus(zeroRotation));
+                (value) -> inputs.turnPosition = new Rotation2d(value));
 
         ifOk(turnMotor, turnMotor.getEncoder()::getVelocity, (value) -> inputs.turnVelocityRadPerSec = value);
         ifOk(
@@ -197,6 +197,7 @@ public class ModuleIOReal implements ModuleIO {
     @Override
     public void setDriveOpenLoop(double output) {
         driveMotor.setVoltage(output);
+        Logger.recordOutput(getModuleString() + " applied volt", output);
     }
 
     @Override
