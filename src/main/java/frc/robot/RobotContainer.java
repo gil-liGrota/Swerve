@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Commands.SwerveCommands;
 import frc.robot.Subsystems.Swerve.GyroIOPigeon;
 import frc.robot.Subsystems.Swerve.ModuleIOReal;
@@ -22,6 +23,8 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
+
+        new Trigger(driverController::getYButton).onTrue(swerve.resetGyroCommand());
     }
 
     public Command getAutonomousCommand() {

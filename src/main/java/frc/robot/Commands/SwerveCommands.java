@@ -60,16 +60,16 @@ public class SwerveCommands {
         return Commands.run(
                 () -> {
                     // Get linear velocity
-                    Translation2d linearVelocity = getLinearVelocityFromJoysticks(xSupplier.getAsDouble(),
-                            ySupplier.getAsDouble());
+                    Translation2d linearVelocity = getLinearVelocityFromJoysticks(-xSupplier.getAsDouble(),
+                            -ySupplier.getAsDouble());
 
-                    linearVelocity = linearVelocity.times(0.25);// TODO remove
+                    linearVelocity = linearVelocity.times(0.15);// TODO remove
 
                     // Apply rotation deadband
                     double omega = MathUtil.applyDeadband(omegaSupplier.getAsDouble(), DEADBAND);
 
                     // Square rotation value for more precise control
-                    omega = Math.copySign(omega * omega, omega);
+                    omega = Math.copySign(omega * omega * 0.15, omega);
 
                     // Convert to field relative speeds & send command
                     ChassisSpeeds speeds = new ChassisSpeeds(
