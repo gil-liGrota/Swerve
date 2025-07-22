@@ -37,6 +37,7 @@ public class Module {
         odometryPositions = new SwerveModulePosition[sampleCount];
         for (int i = 0; i < sampleCount; i++) {
             double positionMeters = inputs.odometryDrivePositionsRad[i] * wheelRadiusMeters;
+            Logger.recordOutput(getModuleString() + " odometryPositionsMeters", positionMeters);
             Rotation2d angle = inputs.odometryTurnPositions[i];
             odometryPositions[i] = new SwerveModulePosition(positionMeters, angle);
         }
