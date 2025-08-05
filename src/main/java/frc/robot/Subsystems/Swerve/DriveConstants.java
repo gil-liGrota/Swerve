@@ -21,6 +21,22 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 
 public class DriveConstants {
+        public static final double KP_XY = 1.7;
+        public static final double KI_XY = 0;
+        public static final double KD_XY = 0;
+        public static final double MAX_ACCELERATION_XY = 2;
+        public static final double MAX_VELOCETY_XY = 2;
+        public static final double TRANSLATION_TOLERANCE = 0.03;
+
+        public static final double KP_OMEGA = 2;
+        public static final double KI_OMEGA = 0;
+        public static final double KD_OMEGA = 0;
+        public static final double MAX_ACCELERATION_OMEGA = 2;
+        public static final double MAX_VELOCETY_OMEGA = 1.8;
+        public static final double OMEGA_TOLERANCE = 0.05;
+
+        public static final double ALGAE_OUTTAKE_DRIVE_BACK_SPEED = 0.04;
+
         public static final double maxSpeedMetersPerSec = 1;
         public static final double odometryFrequency = 50.0; // Hz TODO
         public static final double trackWidth = 0.55735;
