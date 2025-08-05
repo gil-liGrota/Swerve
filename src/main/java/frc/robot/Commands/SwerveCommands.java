@@ -31,11 +31,12 @@ import static frc.robot.Subsystems.Swerve.DriveConstants.*;
 
 public class SwerveCommands {
 
-        private static final double DEADBAND = 0.1;
-        private static final double ANGLE_KP = 5.0;
-        private static final double ANGLE_KD = 0.4;
-        private static final double ANGLE_MAX_VELOCITY = 8.0;
-        private static final double ANGLE_MAX_ACCELERATION = 20.0;
+        private static final double DEADBAND = 0.15;
+        private static final double ANGLE_KP = 1.8;
+        private static final double ANGLE_KD = 0.2;
+        private static final double TOLERANCE = 0.03;
+        private static final double ANGLE_MAX_VELOCITY = 7.0;
+        private static final double ANGLE_MAX_ACCELERATION = 7.0;
         private static final double FF_START_DELAY = 2.0; // Secs
         private static final double FF_RAMP_RATE = 0.1; // Volts/Sec
         // private static final double WHEEL_RADIUS_MAX_VELOCITY = 0.25; // Rad/Sec
@@ -421,6 +422,32 @@ public class SwerveCommands {
                         // return m_timer.hasElapsed(5) ||
                         return (m_controllerX.atGoal() && m_controllerY.atGoal() && m_controllerTheta.atGoal());
                 }
+        }
+
+        public static Command goToAngle(Swerve drive, Rotation2d goal) {
+                ProfiledPIDController angleController = new ProfiledPIDController(
+                                ANGLE_KP,
+                                0.0,
+                                ANGLE_KD,
+                                new TrapezoidProfile.Constraints(ANGLE_MAX_VELOCITY, ANGLE_MAX_ACCELERATION));
+                angleController.enableContinuousInput(-Math.PI, Math.PI);
+                angleController.setTolerance(TOLERANCE);
+                // return Commands.startEnd(() -> drive.runVelocity(
+                // new ChassisSpeeds(0, 0, angleController.calculate(
+                // drive.getPose().getRotation().getRadians(), goal.getRadians())),
+                // true),
+                // () -> drive.stop(), drive);
+
+                return new FunctionalCommand(
+                                () -> angleController.reset(drive.getRotation().getRadians(), 0),
+                                () -> drive.runVelocity(
+                                                new ChassisSpeeds(0, 0, angleController.calculate(
+                                                                drive.getPose().getRotation().getRadians(),
+                                                                goal.getRadians())),
+                                                true),
+                                interrupted -> drive.stop(),
+                                angleController::atGoal,
+                                drive);
         }
 
 }
