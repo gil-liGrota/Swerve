@@ -87,7 +87,7 @@ public class ModuleIOReal implements ModuleIO {
         var driveConfig = new TalonFXConfiguration();
         driveConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
         Slot0Configs driveMotorGains = new Slot0Configs()
-                .withKP(driveKp).withKD(driveKd).withKS(driveKs).withKV(driveKv);
+                .withKP(driveKp).withKI(driveKi).withKS(driveKs).withKV(driveKv);
         driveConfig.Slot0 = driveMotorGains;
         driveConfig.Feedback.SensorToMechanismRatio = driveEncoderPositionFactor;
         driveConfig.TorqueCurrent.PeakForwardTorqueCurrent = driveSlipCurrent;
@@ -182,7 +182,7 @@ public class ModuleIOReal implements ModuleIO {
         inputs.odometryTimestamps = timestampQueue.stream().mapToDouble((Double value) -> value).toArray();
         inputs.odometryDrivePositionsRad = drivePositionQueue.stream().mapToDouble((Double value) -> value).toArray();
         inputs.odometryTurnPositions = turnPositionQueue.stream()
-                .map((Double value) -> new Rotation2d(value).minus(zeroRotation))
+                .map((Double value) -> new Rotation2d(value))
                 .toArray(Rotation2d[]::new);
         timestampQueue.clear();
         drivePositionQueue.clear();
@@ -208,6 +208,7 @@ public class ModuleIOReal implements ModuleIO {
     @Override
     public void setDriveVelocity(double velocityRadPerSec) {
         driveMotor.setControl(velocityVoltageRequest.withVelocity(velocityRadPerSec));
+        Logger.recordOutput(getModuleString() + " real velocity rad per sec", velocityRadPerSec);
     }
 
     @Override

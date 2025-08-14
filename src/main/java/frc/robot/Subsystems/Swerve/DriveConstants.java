@@ -37,7 +37,7 @@ public class DriveConstants {
 
         public static final double ALGAE_OUTTAKE_DRIVE_BACK_SPEED = 0.04;
 
-        public static final double maxSpeedMetersPerSec = 1;
+        public static final double maxSpeedMetersPerSec = 3;
         public static final double odometryFrequency = 50.0; // Hz TODO
         public static final double trackWidth = 0.55735;
         public static final double wheelBase = 0.55735;
@@ -92,10 +92,11 @@ public class DriveConstants {
                                                                                                             // Rad/Sec
 
         // Drive PID configuration
-        public static final double driveKp = 0.15;
+        public static final double driveKp = 0.05;
         public static final double driveKd = 0.0;
-        public static final double driveKs = 0.25;
-        public static final double driveKv = .7;
+        public static final double driveKi = 0.01;
+        public static final double driveKs = 0.22;
+        public static final double driveKv = 0.11;
         public static final double driveSimP = 0.0;
         public static final double driveSimD = 0.0;
         public static final double driveSimKs = 0.0;

@@ -72,13 +72,13 @@ public class SwerveCommands {
                                                         -xSupplier.getAsDouble(),
                                                         -ySupplier.getAsDouble());
 
-                                        linearVelocity = linearVelocity.times(0.15);// TODO remove
+                                        linearVelocity = linearVelocity.times(0.2);// TODO remove
 
                                         // Apply rotation deadband
                                         double omega = MathUtil.applyDeadband(omegaSupplier.getAsDouble(), DEADBAND);
 
                                         // Square rotation value for more precise control
-                                        omega = Math.copySign(omega * omega * 0.15, omega);
+                                        omega = Math.copySign(omega * omega * 0.2, omega);
 
                                         // Convert to field relative speeds & send command
                                         ChassisSpeeds speeds = new ChassisSpeeds(
@@ -94,7 +94,7 @@ public class SwerveCommands {
                                                                                         ? drive.getRotation().plus(
                                                                                                         new Rotation2d(Math.PI))
                                                                                         : drive.getRotation()),
-                                                        true);
+                                                        false);
                                 },
                                 drive);
         }
