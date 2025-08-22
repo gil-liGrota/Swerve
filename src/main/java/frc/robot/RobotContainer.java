@@ -1,27 +1,27 @@
 package frc.robot;
 
-import java.util.logging.Logger;
+import static frc.robot.Subsystems.vision.VisionConstants.camera0Name;
 
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Commands.SwerveCommands;
 import frc.robot.Commands.SwerveCommands.DriveToPosition;
+import frc.robot.Subsystems.vision.VisionConstants;
 import frc.robot.Subsystems.Swerve.GyroIOPigeon;
 import frc.robot.Subsystems.Swerve.ModuleIOReal;
 import frc.robot.Subsystems.Swerve.Swerve;
+import frc.robot.Subsystems.vision.Vision;
+import frc.robot.Subsystems.vision.VisionIOPhotonVision;
 
 public class RobotContainer {
     private final LoggedDashboardChooser<Command> autoChooser;
@@ -30,6 +30,9 @@ public class RobotContainer {
     private DriveToPosition driveToPosition = new DriveToPosition(swerve, new Pose2d(5, 0, null));
 
     private XboxController driverController = new XboxController(0);
+
+    private Vision vision = new Vision(swerve::addVisionMeasurement,
+            new VisionIOPhotonVision(camera0Name, VisionConstants.robotToCamera0));
 
     public RobotContainer() {
         swerve.setDefaultCommand(

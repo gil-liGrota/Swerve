@@ -1,5 +1,8 @@
 package frc.robot.Subsystems.Swerve;
 
+import static frc.robot.Subsystems.Swerve.DriveConstants.maxSpeedMetersPerSec;
+import static frc.robot.Subsystems.Swerve.DriveConstants.wheelRadiusMeters;
+
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -7,7 +10,6 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
-import static frc.robot.Subsystems.Swerve.DriveConstants.*;
 
 public class Module {
     private final ModuleIO io;
