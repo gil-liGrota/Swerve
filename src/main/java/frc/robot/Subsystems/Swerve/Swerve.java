@@ -8,7 +8,8 @@ import static edu.wpi.first.units.Units.Volts;
 import static frc.robot.Constants.currentMode;
 import static frc.robot.Subsystems.Swerve.DriveConstants.driveBaseRadius;
 import static frc.robot.Subsystems.Swerve.DriveConstants.maxSpeedMetersPerSec;
-import static frc.robot.Subsystems.Swerve.DriveConstants.*;
+import static frc.robot.Subsystems.Swerve.DriveConstants.moduleTranslations;
+import static frc.robot.Subsystems.Swerve.DriveConstants.ppConfig;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
