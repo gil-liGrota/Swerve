@@ -37,7 +37,7 @@ public class DriveConstants {
 
         public static final double ALGAE_OUTTAKE_DRIVE_BACK_SPEED = 0.04;
 
-        public static final double maxSpeedMetersPerSec = 3;
+        public static final double maxSpeedMetersPerSec = 6;
         public static final double odometryFrequency = 50.0; // Hz TODO
         public static final double trackWidth = 0.55735;
         public static final double wheelBase = 0.55735;
